@@ -553,19 +553,24 @@ weekly = (
 weekly = weekly.round(2)
 
 st.dataframe(
-    weekly.style
-    .format({
-        "Sleep (hrs)"      : "{:.2f}",
-        "Meditation (min)" : "{:.1f}",
-        "Stress (1–10)"    : "{:.2f}",
-        "Performance"      : "{:.1f}",
-    })
-    .background_gradient(subset=["Performance"],    cmap="Greens")
-    .background_gradient(subset=["Stress (1–10)"],  cmap="Reds_r")
-    .background_gradient(subset=["Meditation (min)"], cmap="Purples"),
+    weekly,
     use_container_width=True,
     hide_index=True,
     height=310,
+    column_config={
+        "ISO Week"        : st.column_config.NumberColumn("ISO Week", format="%d"),
+        "Sleep (hrs)"     : st.column_config.NumberColumn("Sleep (hrs)", format="%.2f"),
+        "Meditation (min)": st.column_config.ProgressColumn(
+            "Meditation (min)", min_value=0, max_value=60, format="%.1f"
+        ),
+        "Stress (1–10)"   : st.column_config.ProgressColumn(
+            "Stress (1–10)", min_value=1, max_value=10, format="%.2f"
+        ),
+        "Performance"     : st.column_config.ProgressColumn(
+            "Performance", min_value=0, max_value=100, format="%.1f"
+        ),
+        "Athletes"        : st.column_config.NumberColumn("Athletes", format="%d"),
+    },
 )
 
 # ─── Footer ─────────────────────────────────────────────────────────────────
